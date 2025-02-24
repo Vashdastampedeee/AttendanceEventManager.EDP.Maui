@@ -321,7 +321,111 @@
     </ContentPage>
 
     <ContentPage Title="Dashboard" BackgroundColor="{DynamicResource BgColorWhite}">
-        <Label Text="This is dashboard page" />
+        <ScrollView Padding="20">
+            <VerticalStackLayout Spacing="15">
+
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="24"
+                    Text="TOTAL EMPLOYEE SCANNED"
+                    TextColor="{DynamicResource TextColorBlack}" />
+
+                <Frame
+                    BackgroundColor="{DynamicResource BgColorWhite}"
+                    HasShadow="True"
+                    WidthRequest="300">
+                    <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                        <Label
+                            x:Name="AllLabel"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="ALL:"
+                            TextColor="{DynamicResource TextColorBlack}" />
+                        <Button
+                            Clicked="View_Clicked"
+                            HeightRequest="80"
+                            Text="View" />
+                    </FlexLayout>
+                </Frame>
+
+                <Frame
+                    BackgroundColor="{DynamicResource BgColorWhite}"
+                    HasShadow="True"
+                    WidthRequest="300">
+                    <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                        <Label
+                            x:Name="RawlingsLabel"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="RAWLINGS:"
+                            TextColor="{DynamicResource TextColorBlack}" />
+                        <Button HeightRequest="80" Text="View" />
+                    </FlexLayout>
+                </Frame>
+
+                <Frame
+                    BackgroundColor="{DynamicResource BgColorWhite}"
+                    HasShadow="True"
+                    WidthRequest="300">
+                    <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                        <Label
+                            x:Name="JlineLabel"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="JLINE:"
+                            TextColor="{DynamicResource TextColorBlack}" />
+                        <Button HeightRequest="80" Text="View" />
+                    </FlexLayout>
+                </Frame>
+
+                <Frame
+                    BackgroundColor="{DynamicResource BgColorWhite}"
+                    HasShadow="True"
+                    WidthRequest="300">
+                    <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                        <Label
+                            x:Name="HlbLabel"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="HLB:"
+                            TextColor="{DynamicResource TextColorBlack}" />
+                        <Button HeightRequest="80" Text="View" />
+                    </FlexLayout>
+                </Frame>
+
+                <Frame
+                    BackgroundColor="{DynamicResource BgColorWhite}"
+                    HasShadow="True"
+                    WidthRequest="300">
+                    <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                        <Label
+                            x:Name="BagLabel"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="BAG:"
+                            TextColor="{DynamicResource TextColorBlack}" />
+                        <Button HeightRequest="80" Text="View" />
+                    </FlexLayout>
+                </Frame>
+
+                <Frame
+                    BackgroundColor="{DynamicResource BgColorWhite}"
+                    HasShadow="True"
+                    WidthRequest="300">
+                    <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                        <Label
+                            x:Name="SupportLabel"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="SUPPORT:"
+                            TextColor="{DynamicResource TextColorBlack}" />
+                        <Button HeightRequest="80" Text="View" />
+                    </FlexLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
     </ContentPage>
 
 </TabbedPage>

@@ -18,7 +18,7 @@
             <Label
                 x:Name="EventName"
                 FontAttributes="Bold"
-                FontSize="34"
+                FontSize="30"
                 HorizontalTextAlignment="Center"
                 Text="Event Name"
                 TextColor="{DynamicResource TextColorBlack}" />

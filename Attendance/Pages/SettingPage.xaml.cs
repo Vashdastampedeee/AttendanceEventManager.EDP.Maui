@@ -33,6 +33,7 @@ public partial class SettingPage : TabbedPage
         base.OnAppearing();
         LoadAttendanceLogs();
         LoadEvents();
+        LoadDashboardData();
     }
     //DATABASE TABBED
     private async void SyncBtn_Clicked(object sender, EventArgs e)
@@ -201,7 +202,8 @@ public partial class SettingPage : TabbedPage
         if (selectedEvent != null)
         {
             await _dbHelper.SetSelectedEventAsync(selectedEvent.Id);
-            await LoadEvents(); 
+            await LoadEvents();
+            LoadDashboardData();
         }
     }
 
@@ -273,5 +275,37 @@ public partial class SettingPage : TabbedPage
         AttendanceLogData.ItemsSource = new ObservableCollection<AttendanceLog>(filteredLogs);
     }
 
- 
+    private async void LoadDashboardData()
+    {
+        int scannedCount = await _dbHelper.GetScannedEmployeeCountForActiveEventAsync();
+        int totalEmployees = await _dbHelper.GetTotalEmployeeCountAsync();
+        var buCounts = await _dbHelper.GetTotalEmployeeCountForAllBUAsync();
+        var scannedBUCounts = await _dbHelper.GetScannedEmployeeCountForAllBUAsync();
+
+        double allPercentage = totalEmployees > 0 ? (scannedCount / (double)totalEmployees) * 100 : 0;
+        double rawlingsPercentage = buCounts["RAWLINGS"] > 0 ? (scannedBUCounts["RAWLINGS"] / (double)buCounts["RAWLINGS"]) * 100 : 0;
+        double jlinePercentage = buCounts["JLINE"] > 0 ? (scannedBUCounts["JLINE"] / (double)buCounts["JLINE"]) * 100 : 0;
+        double hlbPercentage = buCounts["HLB"] > 0 ? (scannedBUCounts["HLB"] / (double)buCounts["HLB"]) * 100 : 0;
+        double bagPercentage = buCounts["BAG"] > 0 ? (scannedBUCounts["BAG"] / (double)buCounts["BAG"]) * 100 : 0;
+        double supportPercentage = buCounts["SUPPORT GROUP"] > 0 ? (scannedBUCounts["SUPPORT GROUP"] / (double)buCounts["SUPPORT GROUP"]) * 100 : 0;
+
+        AllLabel.Text = $"ALL: {scannedCount}/{totalEmployees} ({allPercentage:F2}%)";
+        RawlingsLabel.Text = $"Rawlings: {scannedBUCounts["RAWLINGS"]}/{buCounts["RAWLINGS"]} ({rawlingsPercentage:F2}%)";
+        JlineLabel.Text = $"JLINE: {scannedBUCounts["JLINE"]}/{buCounts["JLINE"]} ({jlinePercentage:F2}%)";
+        HlbLabel.Text = $"HLB: {scannedBUCounts["HLB"]}/{buCounts["HLB"]} ({hlbPercentage:F2}%)";
+        BagLabel.Text = $"BAG: {scannedBUCounts["BAG"]}/{buCounts["BAG"]} ({bagPercentage:F2}%)";
+        SupportLabel.Text = $"SUPPORT: {scannedBUCounts["SUPPORT GROUP"]}/{buCounts["SUPPORT GROUP"]} ({supportPercentage:F2}%)";
+    }
+
+    private async void View_Clicked(object sender, EventArgs e)
+    {
+        var selectedEvent = await _dbHelper.GetSelectedEventAsync();
+        if (selectedEvent == null)
+        {
+            await DisplayAlert("Error", "No active event selected!", "OK");
+            return;
+        }
+
+        await Navigation.PushAsync(new AttendanceDetailsPage(_dbHelper, selectedEvent.EventName));
+    }
 }

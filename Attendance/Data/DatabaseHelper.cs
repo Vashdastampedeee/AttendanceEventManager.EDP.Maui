@@ -372,9 +372,103 @@ namespace Attendance.Data
                 .Where(log => log.EventName == eventName && log.EventCategory == eventCategory && log.EventDate == eventDate)
                 .ToListAsync();
         }
+        public async Task<int> GetTotalEmployeeCountAsync()
+        {
+            return await _database.Table<Employee>().CountAsync();
+        }
+
+        public async Task<int> GetScannedEmployeeCountForActiveEventAsync()
+        {
+            var selectedEvent = await GetSelectedEventAsync();
+            if (selectedEvent == null)
+                return 0; 
+            return await _database.Table<AttendanceLog>()
+                .Where(log => log.EventName == selectedEvent.EventName &&
+                              log.EventCategory == selectedEvent.Category &&
+                              log.EventDate == selectedEvent.EventDate &&
+                              log.FromTime == selectedEvent.FromTime &&
+                              log.ToTime == selectedEvent.ToTime)
+                .CountAsync();
+        }
+
+        // Get total employee count for a specific Business Unit
+        public async Task<int> GetTotalEmployeeCountByBUAsync(string businessUnit)
+        {
+            return await _database.Table<Employee>()
+                                  .Where(emp => emp.BusinessUnit == businessUnit)
+                                  .CountAsync();
+        }
+
+        // Get total employee counts for all business units
+        public async Task<Dictionary<string, int>> GetTotalEmployeeCountForAllBUAsync()
+        {
+            var businessUnits = new List<string> { "RAWLINGS", "JLINE", "HLB", "BAG", "SUPPORT GROUP" };
+            var result = new Dictionary<string, int>();
+
+            foreach (var bu in businessUnits)
+            {
+                int count = await GetTotalEmployeeCountByBUAsync(bu);
+                result[bu] = count;
+            }
+
+            return result;
+        }
+
+        // Get the count of scanned employees for a specific Business Unit in the active event
+        public async Task<int> GetScannedEmployeeCountByBUAsync(string businessUnit)
+        {
+            // Get the currently active event
+            var selectedEvent = await GetSelectedEventAsync();
+            if (selectedEvent == null)
+                return 0; // No active event, return 0 scans
+
+            // Count scanned employees for the active event and specific business unit
+            return await _database.Table<AttendanceLog>()
+                .Where(log => log.EventName == selectedEvent.EventName &&
+                              log.EventCategory == selectedEvent.Category &&
+                              log.EventDate == selectedEvent.EventDate &&
+                              log.FromTime == selectedEvent.FromTime &&
+                              log.ToTime == selectedEvent.ToTime &&
+                              log.BusinessUnit == businessUnit)
+                .CountAsync();
+        }
+
+        // Get scanned employee counts for all business units in the active event
+        public async Task<Dictionary<string, int>> GetScannedEmployeeCountForAllBUAsync()
+        {
+            var selectedEvent = await GetSelectedEventAsync();
+            if (selectedEvent == null)
+                return new Dictionary<string, int>(); // No active event, return empty dictionary
+
+            var businessUnits = new List<string> { "RAWLINGS", "JLINE", "HLB", "BAG", "SUPPORT GROUP" };
+            var result = new Dictionary<string, int>();
+
+            foreach (var bu in businessUnits)
+            {
+                int count = await GetScannedEmployeeCountByBUAsync(bu);
+                result[bu] = count;
+            }
+
+            return result;
+        }
+        // Get Present Employees for Active Event
+        public async Task<List<AttendanceLog>> GetPresentEmployeesAsync(string eventName)
+        {
+            string query = "SELECT * FROM attendancelogs WHERE EventName = ?";
+            return await _database.QueryAsync<AttendanceLog>(query, eventName);
+        }
 
 
+        // Get Absent Employees for Active Event
+        public async Task<List<Employee>> GetAbsentEmployeesAsync(string eventName)
+        {
+            string query = @"
+        SELECT * FROM employee 
+        WHERE IdNumber NOT IN 
+        (SELECT IdNumber FROM attendancelogs WHERE EventName = ?)";
 
+            return await _database.QueryAsync<Employee>(query, eventName);
+        }
 
     }
 }
