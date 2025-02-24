@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Attendance.Pages.SplashPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="SplashPage"
+    BackgroundColor="{DynamicResource BgColorWhite}"
+    Shell.NavBarIsVisible="False">
+
+    <VerticalStackLayout VerticalOptions="Center">
+
+        <Image
+            Aspect="AspectFit"
+            Source="tp_splash.png"
+            WidthRequest="300" />
+
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
+
+            <Button
+                x:Name="Dot1"
+                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                CornerRadius="15"
+                HeightRequest="10"
+                WidthRequest="10" />
+
+            <Button
+                x:Name="Dot2"
+                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                CornerRadius="15"
+                HeightRequest="10"
+                WidthRequest="10" />
+
+            <Button
+                x:Name="Dot3"
+                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                CornerRadius="15"
+                HeightRequest="10"
+                WidthRequest="10" />
+
+            <Button
+                x:Name="Dot4"
+                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                CornerRadius="15"
+                HeightRequest="10"
+                WidthRequest="10" />
+
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+</ContentPage>

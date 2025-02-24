@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Attendance.Pages.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="{DynamicResource BgColorWhite}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="10" VerticalOptions="Center">
+
+            <Image
+                x:Name="EventImage"
+                Aspect="AspectFit"
+                HeightRequest="50"
+                Source="event.png"
+                WidthRequest="200" />
+
+            <Label
+                x:Name="EventName"
+                FontAttributes="Bold"
+                FontSize="34"
+                HorizontalTextAlignment="Center"
+                Text="Event Name"
+                TextColor="{DynamicResource TextColorBlack}" />
+
+            <Label
+                x:Name="CurrentDate"
+                FontAttributes="Bold"
+                FontSize="16"
+                HorizontalTextAlignment="Center"
+                Text="Date Now"
+                TextColor="{DynamicResource TextColorBlack}" />
+
+            <Label
+                x:Name="Id_Number"
+                FontSize="18"
+                HorizontalTextAlignment="Center"
+                Text="ID Number: "
+                TextColor="{DynamicResource TextColorBlack}" />
+
+            <Frame
+                x:Name="Id_Frame"
+                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                BorderColor="{DynamicResource Transparent}"
+                CornerRadius="10"
+                HeightRequest="170"
+                WidthRequest="170">
+
+                <Image
+                    x:Name="Id_Photo"
+                    Aspect="AspectFit"
+                    Source="blank_id.png" />
+            </Frame>
+
+            <Label
+                x:Name="Full_Name"
+                FontSize="16"
+                HorizontalTextAlignment="Center"
+                Text="Name: "
+                TextColor="{DynamicResource TextColorBlack}" />
+
+            <Label
+                x:Name="Business_Unit"
+                FontSize="16"
+                HorizontalTextAlignment="Center"
+                Text="Business Unit: "
+                TextColor="{DynamicResource TextColorBlack}" />
+
+            <Frame
+                Padding="5"
+                BackgroundColor="{DynamicResource BgColorWhite}"
+                BorderColor="{DynamicResource BgColorWhite}"
+                CornerRadius="10">
+                <Entry
+                    x:Name="BarcodeTextBox"
+                    BackgroundColor="{DynamicResource Transparent}"
+                    Completed="BarcodeTextBox_Completed"
+                    FontAttributes="Bold"
+                    Placeholder="Scan ID Number"
+                    PlaceholderColor="{DynamicResource TextColorBlack}"
+                    TextColor="{DynamicResource TextColorBlack}"
+                    WidthRequest="250" />
+            </Frame>
+
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+
+                <Button
+                    x:Name="ScanBtn"
+                    BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                    Clicked="ScanBtn_Clicked"
+                    FontAttributes="Bold"
+                    FontAutoScalingEnabled="True"
+                    FontSize="14"
+                    HeightRequest="40"
+                    ImageSource="scan.png"
+                    Text="Scan"
+                    TextColor="{DynamicResource TextColorWhite}"
+                    WidthRequest="120" />
+                <Button
+                    x:Name="OptionBtn"
+                    BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                    Clicked="OptionBtn_Clicked"
+                    FontAttributes="Bold"
+                    FontAutoScalingEnabled="True"
+                    FontSize="14"
+                    HeightRequest="40"
+                    ImageSource="option.png"
+                    Text="Option"
+                    TextColor="{DynamicResource TextColorWhite}"
+                    WidthRequest="120" />
+
+            </HorizontalStackLayout>
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+
+</ContentPage>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage
+    x:Class="Attendance.Pages.SettingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Option"
+    BackgroundColor="{DynamicResource BgColorWhite}"
+    BarBackground="{DynamicResource BgColorWhite}"
+    SelectedTabColor="{DynamicResource PrimaryColorDarkBlue}"
+    UnselectedTabColor="{DynamicResource TextColorDarkGray}">
+
+    <ContentPage Title="Logs" BackgroundColor="{DynamicResource BgColorWhite}">
+        <ScrollView>
+            <VerticalStackLayout>
+                <HorizontalStackLayout
+                    Padding="5"
+                    HorizontalOptions="CenterAndExpand"
+                    Spacing="5">
+                    <Frame
+                        Padding="5"
+                        BackgroundColor="{DynamicResource BgColorWhite}"
+                        BorderColor="{DynamicResource PrimaryColorDarkBlue}"
+                        CornerRadius="10">
+
+                        <HorizontalStackLayout>
+                            <Entry
+                                x:Name="SearchLogsTextBox"
+                                BackgroundColor="{DynamicResource Transparent}"
+                                FontAttributes="Bold"
+                                Placeholder="Search ID/BU/Name/Status"
+                                TextChanged="SearchLogsTextBox_TextChanged"
+                                TextColor="{DynamicResource TextColorBlack}"
+                                WidthRequest="135" />
+                            <Button
+                                x:Name="LogsFilterPicker"
+                                Padding="-5"
+                                BackgroundColor="{DynamicResource Transparent}"
+                                Clicked="LogsFilterPicker_Clicked"
+                                HeightRequest="30"
+                                ImageSource="filter_icon1.png"
+                                WidthRequest="40" />
+
+                            <Button
+                                x:Name="LogsRemoveFilter"
+                                Padding="-5"
+                                BackgroundColor="{DynamicResource Transparent}"
+                                HeightRequest="30"
+                                ImageSource="close_icon.png"
+                                IsVisible="False"
+                                WidthRequest="40" />
+                        </HorizontalStackLayout>
+
+                    </Frame>
+
+                    <Button
+                        x:Name="RefreshLogBtn"
+                        BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                        Clicked="RefreshLogBtn_Clicked"
+                        Text="Refresh"
+                        TextColor="{DynamicResource TextColorWhite}" />
+                    <Button
+                        x:Name="ExportBtn"
+                        BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                        Clicked="ExportBtn_Clicked"
+                        Text="Export"
+                        TextColor="{DynamicResource TextColorWhite}" />
+                </HorizontalStackLayout>
+
+
+                <CollectionView x:Name="AttendanceLogData">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame
+                                Margin="5"
+                                Padding="10"
+                                BackgroundColor="{DynamicResource BgColorWhite}">
+                                <ScrollView Orientation="Horizontal">
+                                    <HorizontalStackLayout Spacing="50">
+                                        <VerticalStackLayout>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                Text="{Binding IdNumber}"
+                                                TextColor="{DynamicResource TextColorBlack}" />
+                                            <Label
+                                                FontSize="17"
+                                                Text="{Binding BusinessUnit}"
+                                                TextColor="{DynamicResource TextColorBlack}" />
+                                            <Label
+                                                FontSize="15"
+                                                Text="{Binding Name}"
+                                                TextColor="{DynamicResource TextColorBlack}" />
+                                            <Label
+                                                FontSize="14"
+                                                Text="{Binding Status}"
+                                                TextColor="{DynamicResource TextColorBlack}" />
+                                            <Label
+                                                FontSize="12"
+                                                Text="{Binding Timestamp}"
+                                                TextColor="{DynamicResource TextColorBlack}" />
+                                        </VerticalStackLayout>
+
+                                        <VerticalStackLayout>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                Text="{Binding EventName}"
+                                                TextColor="{DynamicResource TextColorBlack}" />
+                                            <Label
+                                                FontSize="17"
+                                                Text="{Binding EventCategory}"
+                                                TextColor="{DynamicResource TextColorBlack}" />
+                                            <Label
+                                                FontSize="15"
+                                                Text="{Binding EventDate}"
+                                                TextColor="{DynamicResource TextColorBlack}" />
+                                            <HorizontalStackLayout>
+                                                <Label
+                                                    FontSize="14"
+                                                    Text="{Binding FromTime}"
+                                                    TextColor="{DynamicResource TextColorBlack}" />
+                                                <Label
+                                                    FontSize="14"
+                                                    Text=" - "
+                                                    TextColor="{DynamicResource TextColorBlack}" />
+                                                <Label
+                                                    FontSize="14"
+                                                    Text="{Binding ToTime}"
+                                                    TextColor="{DynamicResource TextColorBlack}" />
+                                            </HorizontalStackLayout>
+
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
+                                </ScrollView>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage>
+
+    <ContentPage Title="Event" BackgroundColor="{DynamicResource BgColorWhite}">
+        <ScrollView>
+            <VerticalStackLayout>
+                <HorizontalStackLayout
+                    Padding="5"
+                    HorizontalOptions="CenterAndExpand"
+                    Spacing="5">
+                    <Frame
+                        Padding="5"
+                        BackgroundColor="{DynamicResource BgColorWhite}"
+                        BorderColor="{DynamicResource PrimaryColorDarkBlue}"
+                        CornerRadius="10">
+
+                        <HorizontalStackLayout>
+                            <Entry
+                                x:Name="SearchEventTextBox"
+                                BackgroundColor="{DynamicResource Transparent}"
+                                FontAttributes="Bold"
+                                Placeholder="Search Event"
+                                TextChanged="SearchEventTextBox_TextChanged"
+                                TextColor="{DynamicResource TextColorBlack}"
+                                WidthRequest="155" />
+                            <Button
+                                x:Name="CategoryFilterPicker"
+                                Padding="-5"
+                                BackgroundColor="{DynamicResource Transparent}"
+                                Clicked="CategoryFilterPicker_Clicked"
+                                HeightRequest="30"
+                                ImageSource="filter_icon1.png"
+                                WidthRequest="40" />
+
+                        </HorizontalStackLayout>
+
+                    </Frame>
+
+                    <Button
+                        x:Name="AddBtn"
+                        BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                        Clicked="AddBtn_Clicked"
+                        Text="Add"
+                        TextColor="{DynamicResource TextColorWhite}" />
+                    <Button
+                        x:Name="RefreshEventBtn"
+                        BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                        Clicked="RefreshEventBtn_Clicked"
+                        Text="Refresh"
+                        TextColor="{DynamicResource TextColorWhite}" />
+                </HorizontalStackLayout>
+
+                <CollectionView x:Name="EventData">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame
+                                Margin="5"
+                                Padding="10"
+                                BackgroundColor="{DynamicResource BgColorWhite}">
+                                <VerticalStackLayout Spacing="10">
+                                    <HorizontalStackLayout Spacing="110">
+                                        <Image
+                                            Aspect="AspectFit"
+                                            HeightRequest="30"
+                                            Source="{Binding ImageSource}"
+                                            WidthRequest="150" />
+
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="18"
+                                            IsVisible="{Binding IsActive}"
+                                            Text="Default"
+                                            TextColor="{DynamicResource TextColorBlack}" />
+
+                                    </HorizontalStackLayout>
+
+                                    <Label
+                                        FontSize="16"
+                                        Text="{Binding EventName, StringFormat='Event Name: {0}'}"
+                                        TextColor="{DynamicResource TextColorBlack}" />
+
+
+                                    <Label
+                                        FontSize="14"
+                                        Text="{Binding Category, StringFormat='Category: {0}'}"
+                                        TextColor="{DynamicResource TextColorBlack}" />
+
+
+                                    <Label
+                                        FontSize="14"
+                                        Text="{Binding EventDate, StringFormat='Date: {0}'}"
+                                        TextColor="{DynamicResource TextColorBlack}" />
+
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="Time:" TextColor="{DynamicResource TextColorBlack}" />
+                                        <Label
+                                            FontSize="14"
+                                            Text="{Binding FromTime}"
+                                            TextColor="{DynamicResource TextColorBlack}" />
+                                        <Label Text="To" TextColor="{DynamicResource TextColorBlack}" />
+                                        <Label
+                                            FontSize="14"
+                                            Text="{Binding ToTime}"
+                                            TextColor="{DynamicResource TextColorBlack}" />
+                                    </HorizontalStackLayout>
+
+                                    <HorizontalStackLayout Spacing="5">
+
+                                        <Button
+                                            x:Name="UseEventBtn"
+                                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                            Clicked="UseEventBtn_Clicked"
+                                            Text="Use"
+                                            TextColor="{DynamicResource TextColorWhite}" />
+                                        <Button
+                                            x:Name="EditBtn"
+                                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                            Clicked="EditBtn_Clicked"
+                                            Text="Edit"
+                                            TextColor="{DynamicResource TextColorWhite}" />
+                                        <Button
+                                            x:Name="DeleteBtn"
+                                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                            Clicked="DeleteBtn_Clicked"
+                                            Text="Delete"
+                                            TextColor="{DynamicResource TextColorWhite}" />
+
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+
+    </ContentPage>
+
+    <ContentPage Title="Database" BackgroundColor="{DynamicResource BgColorWhite}">
+        <VerticalStackLayout
+            HorizontalOptions="Center"
+            Spacing="30"
+            VerticalOptions="Center">
+            <VerticalStackLayout Spacing="10">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="Sync SQL Server Database"
+                    TextColor="{DynamicResource TextColorBlack}" />
+                <Button
+                    x:Name="SyncBtn"
+                    BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                    Clicked="SyncBtn_Clicked"
+                    FontAttributes="Bold"
+                    HeightRequest="40"
+                    Text="Sync"
+                    TextColor="{DynamicResource TextColorWhite}"
+                    WidthRequest="100" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="10">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="Download SQLite Database"
+                    TextColor="{DynamicResource TextColorBlack}" />
+                <Button
+                    x:Name="DownloadBtn"
+                    BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                    Clicked="DownloadBtn_Clicked"
+                    FontAttributes="Bold"
+                    HeightRequest="40"
+                    Text="Download"
+                    TextColor="{DynamicResource TextColorWhite}"
+                    WidthRequest="100" />
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ContentPage>
+
+    <ContentPage Title="Dashboard" BackgroundColor="{DynamicResource BgColorWhite}">
+        <Label Text="This is dashboard page" />
+    </ContentPage>
+
+</TabbedPage>

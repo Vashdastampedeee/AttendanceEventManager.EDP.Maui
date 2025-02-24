@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage
+    x:Class="Attendance.Popups.FilterCategoryModal"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    Title="FilterCategoryModal"
+    CloseWhenBackgroundIsClicked="True"
+    HasSystemPadding="True">
+
+    <Frame
+        Padding="20"
+        BackgroundColor="{DynamicResource BgColorWhite}"
+        CornerRadius="15"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        WidthRequest="320">
+
+        <VerticalStackLayout Spacing="10">
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="Select Event Category"
+                TextColor="{DynamicResource PrimaryColorDarkBlue}" />
+
+            <Picker
+                x:Name="CategoryPicker"
+                Title="Select Category"
+                FontSize="14"
+                SelectedIndexChanged="CategoryPicker_SelectedIndexChanged"
+                TextColor="{DynamicResource TextColorBlack}" />
+
+            <Button
+                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                Clicked="ApplyCategoryFilter_Clicked"
+                Text="Apply"
+                TextColor="{DynamicResource TextColorWhite}" />
+
+
+        </VerticalStackLayout>
+    </Frame>
+</mopups:PopupPage>

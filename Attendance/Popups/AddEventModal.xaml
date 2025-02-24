@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage
+    x:Class="Attendance.Popups.AddEventModal"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    Title="AddEventModal"
+    CloseWhenBackgroundIsClicked="True"
+    HasSystemPadding="True">
+
+    <Frame
+        Padding="20"
+        BackgroundColor="{DynamicResource BgColorWhite}"
+        CornerRadius="15"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        WidthRequest="300">
+        <VerticalStackLayout Spacing="10">
+            <VerticalStackLayout Spacing="20">
+
+                <Image
+                    x:Name="EventImagePreview"
+                    Aspect="AspectFit"
+                    HeightRequest="100"
+                    IsVisible="True"
+                    Source="event_image_placeholder.jpg" />
+
+                <Frame
+                    BackgroundColor="{DynamicResource BgColorWhite}"
+                    BorderColor="{DynamicResource PrimaryColorDarkBlue}"
+                    CornerRadius="10"
+                    HeightRequest="50">
+                    <Entry
+                        x:Name="EventNameEntry"
+                        BackgroundColor="{DynamicResource Transparent}"
+                        HeightRequest="50"
+                        Placeholder="Enter Event Name"
+                        PlaceholderColor="{DynamicResource TextColorBlack}"
+                        TextColor="{DynamicResource TextColorBlack}" />
+                </Frame>
+
+                <Frame
+                    BackgroundColor="{DynamicResource BgColorWhite}"
+                    BorderColor="{DynamicResource PrimaryColorDarkBlue}"
+                    CornerRadius="10"
+                    HeightRequest="50">
+                    <Picker
+                        x:Name="CategoryPicker"
+                        Title="Event Category"
+                        BackgroundColor="{DynamicResource Transparent}"
+                        HeightRequest="50"
+                        TextColor="{DynamicResource TextColorBlack}">
+                        <Picker.Items>
+                            <x:String>Company Event</x:String>
+                            <x:String>Training</x:String>
+                            <x:String>Seminar</x:String>
+                            <x:String>Orientation</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </Frame>
+
+                <Frame
+                    BackgroundColor="{DynamicResource BgColorWhite}"
+                    BorderColor="{DynamicResource PrimaryColorDarkBlue}"
+                    CornerRadius="10"
+                    HeightRequest="50">
+                    <DatePicker
+                        x:Name="EventDatePicker"
+                        BackgroundColor="{DynamicResource Transparent}"
+                        Format="MM/dd/yyyy"
+                        HeightRequest="50"
+                        TextColor="{DynamicResource TextColorBlack}" />
+                </Frame>
+
+
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="35">
+
+                    <Frame
+                        BackgroundColor="{DynamicResource BgColorWhite}"
+                        BorderColor="{DynamicResource PrimaryColorDarkBlue}"
+                        CornerRadius="10">
+                        <VerticalStackLayout>
+                            <Label
+                                FontAttributes="Bold"
+                                Text="From"
+                                TextColor="{DynamicResource TextColorBlack}"
+                                TextTransform="Uppercase"
+                                VerticalTextAlignment="Center" />
+                            <TimePicker
+                                x:Name="FromTimePicker"
+                                Format="hh:mm tt"
+                                PropertyChanged="FromTimePicker_PropertyChanged"
+                                TextColor="{DynamicResource TextColorBlack}" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+
+                    <Frame
+                        BackgroundColor="{DynamicResource BgColorWhite}"
+                        BorderColor="{DynamicResource PrimaryColorDarkBlue}"
+                        CornerRadius="10">
+                        <VerticalStackLayout>
+                            <Label
+                                FontAttributes="Bold"
+                                Text="To"
+                                TextColor="{DynamicResource TextColorBlack}"
+                                TextTransform="Uppercase"
+                                VerticalTextAlignment="Center" />
+                            <TimePicker
+                                x:Name="ToTimePicker"
+                                Format="hh:mm tt"
+                                IsEnabled="False"
+                                PropertyChanged="ToTimePicker_PropertyChanged"
+                                TextColor="{DynamicResource TextColorBlack}" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                </HorizontalStackLayout>
+
+
+                <HorizontalStackLayout Spacing="10">
+
+                    <Button
+                        x:Name="UploadPictureBtn"
+                        BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                        Clicked="UploadPictureBtn_Clicked"
+                        Text="Upload Img"
+                        TextColor="{DynamicResource TextColorWhite}"
+                        WidthRequest="120" />
+
+                    <Button
+                        x:Name="SubmitBtn"
+                        BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                        Clicked="SubmitBtn_Clicked"
+                        Text="Submit"
+                        TextColor="{DynamicResource TextColorWhite}"
+                        WidthRequest="120" />
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+
+        </VerticalStackLayout>
+    </Frame>
+
+</mopups:PopupPage>

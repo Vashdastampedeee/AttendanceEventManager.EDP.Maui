@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage
+    x:Class="Attendance.Popups.DownloadModal"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    Title="DownloadModal"
+    CloseWhenBackgroundIsClicked="True"
+    HasSystemPadding="True">
+
+    <Frame
+        Padding="20"
+        BackgroundColor="{DynamicResource BgColorWhite}"
+        CornerRadius="15"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        WidthRequest="300">
+        <VerticalStackLayout Spacing="10">
+
+            <Label
+                x:Name="HeaderLabel"
+                FontAttributes="Bold"
+                FontSize="20"
+                HorizontalOptions="Center"
+                TextColor="{DynamicResource PrimaryColorDarkBlue}" />
+
+            <Label
+                x:Name="MessageLabel"
+                FontSize="14"
+                HorizontalOptions="Center"
+                TextColor="{DynamicResource TextColorBlack}" />
+
+            <Button
+                x:Name="OkBtn"
+                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                Clicked="OkBtn_Clicked"
+                CornerRadius="10"
+                Text="OK"
+                TextColor="{DynamicResource TextColorWhite}" />
+        </VerticalStackLayout>
+    </Frame>
+
+</mopups:PopupPage>

@@ -1,0 +1,380 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Attendance.Models;
+using Attendance.Popups;
+using Microsoft.Data.SqlClient;
+using Mopups.Services;
+using ClosedXML.Excel;
+using SQLite;
+
+namespace Attendance.Data
+{
+    public class DatabaseHelper
+    {
+        private readonly SQLiteAsyncConnection _database;
+        private readonly string _sqlServerConnStr = "Server=192.168.4.11;Database=TimeKeeping;User Id=WMS;Password=WMS@dmin;TrustServerCertificate=True;";
+        public DatabaseHelper(string dbPath)
+        {
+            UploadDatabaseIfNoDataBaseExists(dbPath);
+            _database = new SQLiteAsyncConnection(dbPath);
+            _database.CreateTableAsync<Employee>().Wait();
+            _database.CreateTableAsync<AttendanceLog>().Wait();
+            _database.CreateTableAsync<Event>().Wait();
+        }
+        //CONDITION IF THERE ARE EXISTING DATABASE OR NOT
+        private void UploadDatabaseIfNoDataBaseExists(string dbPath)
+        {
+            if (!File.Exists(dbPath))
+            {
+                using var resource = typeof(DatabaseHelper).Assembly.GetManifestResourceStream("Attendance.Resources.Raw.dbtest.db");
+                if (resource == null)
+                {
+                    return;
+                }
+                using var fileStream = File.Create(dbPath);
+                resource.CopyTo(fileStream);
+            }
+        }
+        //HEX CONVERSION FOR IMAGE
+        private bool IsHexString(string input)
+        {
+            return input.Length % 2 == 0 && input.All(c => "0123456789ABCDEFabcdef".Contains(c));
+        }
+        private byte[] ConvertHexToBytes(string hex)
+        {
+            if (hex.StartsWith("0x", StringComparison.OrdinalIgnoreCase)) 
+                hex = hex.Substring(2);
+
+            int length = hex.Length / 2;
+            byte[] bytes = new byte[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                bytes[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
+            }
+            return bytes;
+        }
+        //SYNC FROM SQL SERVER TO SQL LITE 
+        public async Task SyncEmployeesFromSQLServer()
+        {
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+
+            var fetchingPopup = new SyncDataModal();
+            await MopupService.Instance.PushAsync(fetchingPopup);
+
+            using (var sqlConn = new SqlConnection(_sqlServerConnStr))
+            {
+                await sqlConn.OpenAsync();
+                await fetchingPopup.UpdateProgress("Connected to server...");
+
+                await DeleteAllEmployeesAsync();
+                await fetchingPopup.UpdateProgress("Clearing old employee data...");
+
+                int totalEmployees = 0;
+                string countQuery = "SELECT COUNT(*) FROM TimeKeeping..Employees WHERE JobStatus = 'ACTIVE' OR JobStatusCurrent = 'ACTIVE'";
+                using (var countCmd = new SqlCommand(countQuery, sqlConn))
+                {
+                    totalEmployees = (int)await countCmd.ExecuteScalarAsync();
+                }
+
+                await fetchingPopup.UpdateProgress($"Total employees to fetch: {totalEmployees}...");
+
+                string sqlQuery = "select IDNo, EmpName = concat(LastName, ', ',FirstName" +
+                    "                   , case when trim(MiddleName) = '' or MiddleName is null then '' else ' ' end, SUBSTRING(trim(MiddleName), 1, 1), case when trim(MiddleName) = '' or MiddleName is null then '' else '.' end)" +
+                                    ", BusinessUnit, Photo from TimeKeeping..Employees where JobStatus = 'ACTIVE' or JobStatusCurrent = 'ACTIVE'";
+
+                using (var sqlCmd = new SqlCommand(sqlQuery, sqlConn))
+                using (var reader = await sqlCmd.ExecuteReaderAsync())
+                {
+                    var employees = new List<Employee>();
+                    int count = 0;
+
+                    while (await reader.ReadAsync())
+                    {
+                        byte[] photoBytes = reader["Photo"] as byte[];
+
+                        if (photoBytes != null && photoBytes.Length > 0)
+                        {
+                            string hexString = Encoding.UTF8.GetString(photoBytes);
+
+                            if (IsHexString(hexString))
+                            {
+                                photoBytes = ConvertHexToBytes(hexString); 
+                            }
+                        }
+                        var employee = new Employee
+                        {
+                            IdNumber = reader["IDNo"].ToString(),
+                            Name = reader["EmpName"].ToString(),
+                            BusinessUnit = reader["BusinessUnit"].ToString(),
+                            IdPhoto = photoBytes 
+                        };
+
+                        employees.Add(employee);
+                        count++;
+
+                        if (count % 50 == 0 || count == totalEmployees)
+                        {
+                            await fetchingPopup.UpdateProgress($"Fetching {count}/{totalEmployees} employees...");
+                        }
+                    }
+                    await _database.InsertAllAsync(employees);
+                    //await _database.RunInTransactionAsync(tran =>
+                    //{
+                    //    tran.InsertAll(employees);  
+                    //});
+                    await fetchingPopup.UpdateProgress("Saving data to local database...");
+                }
+            }
+            await fetchingPopup.UpdateProgress("Sync completed successfully");
+            await Task.Delay(500); 
+            await MopupService.Instance.PopAsync();
+        }
+        //DELETE EMPLOYEE DATA FROM EMPLOYEE TABLE
+        public async Task DeleteAllEmployeesAsync()
+        {
+            await _database.DeleteAllAsync<Employee>();
+            await _database.ExecuteAsync("DELETE FROM sqlite_sequence WHERE name='employee'");
+            await _database.ExecuteAsync("UPDATE sqlite_sequence SET seq = 0 WHERE name='employee'");
+        }
+        //DELETE LOGS DATA FROM ATTENDANCELOGS TABLE
+        public async Task DeleteAllLogsAsync()
+        {
+            await _database.DeleteAllAsync<AttendanceLog>();
+        }
+        //DISPLAY EMPLOYEE DATA FROM EMPLOYEE TABLE VIA ID NUMBER
+        public async Task<Employee> GetEmployeeAsync(string barcode)
+        {
+            return await _database.Table<Employee>().Where(e => e.IdNumber == barcode).FirstOrDefaultAsync();
+        }
+        //ADD LOGS DATA TO ATTENDANCE LOGS TABLE
+        public Task<int> SaveLogAsync(AttendanceLog log)
+        {
+            return _database.InsertAsync(log);
+        }
+        //CHECK FOR EXISTING LOGS IN CURRENT DATE FROM ATTENDANCE LOG TABLE
+        public async Task<AttendanceLog> GetAttendanceLogByDateAsync(string idNumber, string date)
+        {
+            return await _database.Table<AttendanceLog>().Where(log => log.IdNumber == idNumber && log.Timestamp.StartsWith(date)).FirstOrDefaultAsync();
+        }
+        //DISPLAY LOGS DATA FROM ATTENDANCE LOG TABLE
+        public Task<List<AttendanceLog>> GetLogsAsync()
+        {
+            return _database.Table<AttendanceLog>().OrderByDescending(log => log.Timestamp) .ToListAsync();
+        }
+        //EXPORT LOGS DATA FROM ATTENDANCE LOG TABLE TO EXCEL
+        public async Task ExportAttendanceLogsToExcel()
+        {
+            var logs = await GetLogsAsync();
+            var selectedEvent = await GetSelectedEventAsync();
+
+            if (logs == null || logs.Count == 0)
+            {
+                await MopupService.Instance.PushAsync(new DownloadModal("Export Failed", "No attendance records found."));
+                return;
+            }
+
+            string downloadsPath = Path.Combine("/storage/emulated/0/Download/", "AttendanceLogs.xlsx");
+
+            try
+            {
+                using (var workbook = new XLWorkbook())
+                {
+            
+                    var worksheet = workbook.Worksheets.Add("Attendance Logs");
+
+                    worksheet.Cell(1, 1).Value = "ID Number";
+                    worksheet.Cell(1, 2).Value = "Event Name";
+                    worksheet.Cell(1, 3).Value = "Event Category";
+                    worksheet.Cell(1, 4).Value = "Event Date";
+                    worksheet.Cell(1, 5).Value = "Event Time";
+                    worksheet.Cell(1, 6).Value = "Business Unit";
+                    worksheet.Cell(1, 7).Value = "Name";
+                    worksheet.Cell(1, 8).Value = "Data Scanned";
+                    worksheet.Cell(1, 9).Value = "Status";
+                    int row = 2;
+                    foreach (var log in logs)
+                    {
+                        worksheet.Cell(row, 1).Value = log.IdNumber;
+                        worksheet.Cell(row, 2).Value = log.EventName;
+                        worksheet.Cell(row, 3).Value = log.EventCategory;
+                        worksheet.Cell(row, 4).Value = log.EventDate;
+                        worksheet.Cell(row, 5).Value = $"{log.FromTime} - {log.ToTime}";
+                        worksheet.Cell(row, 6).Value = log.BusinessUnit;
+                        worksheet.Cell(row, 7).Value = log.Name;
+                        worksheet.Cell(row, 8).Value = log.Timestamp;
+                        worksheet.Cell(row, 9).Value = log.Status;
+                        row++;
+                    }
+                    worksheet.Columns().AdjustToContents();
+                    workbook.SaveAs(downloadsPath);
+                }
+
+                await MopupService.Instance.PushAsync(new DownloadModal("Export Successful", $"Excel file saved at:\n{downloadsPath}"));
+            }
+            catch (Exception ex)
+            {
+                await MopupService.Instance.PushAsync(new DownloadModal("Export Error", $"Failed to export file: {ex.Message}"));
+            }
+        }
+        //SEARCH LOG DATA FOR ATTENDANCE LOG TABLE
+        public async Task<List<AttendanceLog>> SearchLogsAsync(string keyword)
+        {
+            keyword = keyword.ToLower();
+
+            return await _database.QueryAsync<AttendanceLog>(
+                "SELECT * FROM attendancelogs WHERE " +
+                "LOWER(IdNumber) LIKE ? OR " +
+                "LOWER(Name) LIKE ? OR " +
+                "LOWER(BusinessUnit) LIKE ? OR " +
+                "LOWER(Status) LIKE ?" +
+                "LOWER(EventName) LIKE ?" +
+                "LOWER(EventCategory) LIKE ?",
+                $"%{keyword}%", $"%{keyword}%", $"%{keyword}%", $"%{keyword}%", $"%{keyword}%", $"%{keyword}%"
+            );
+        }
+        //SEARCH EVENT DATA FOR EMPLOYEE DATA
+        public async Task<List<Event>> SearchEventsAsync(string keyword)
+        {
+            keyword = keyword.ToLower();
+
+            return await _database.QueryAsync<Event>(
+                "SELECT * FROM event WHERE LOWER(EventName) LIKE ? OR LOWER(Category) LIKE ?",
+                $"%{keyword}%", $"%{keyword}%"
+            );
+        }
+        // ADD EVENT DATA
+        public async Task AddEventAsync(Event newEvent)
+        {
+            await _database.InsertAsync(newEvent);
+        }
+        // DELETE SPECIFIC DATA FOR EVENT
+        public async Task DeleteEventAsync(Event deleteEvent)
+        {
+            await _database.DeleteAsync(deleteEvent);
+        }
+        // UPDATE SPECIFIC DATA FOR EVENT 
+        public async Task UpdateEventAsync(Event updatedEvent)
+        {
+            var selectedEvent = await GetSelectedEventAsync();
+
+            if (selectedEvent != null && selectedEvent.Id == updatedEvent.Id)
+            {
+                updatedEvent.IsSelected = true;
+            }
+
+            await _database.UpdateAsync(updatedEvent);
+        }
+        // FOR SELECTION OF DEFAULT EVENT 
+        public async Task SetSelectedEventAsync(int eventId)
+        {
+            var events = await GetEventsAsync();
+
+            foreach (var ev in events)
+            {
+                ev.IsSelected = (ev.Id == eventId); 
+            }
+
+            await _database.UpdateAllAsync(events);
+        }
+        // DISPLAY SELECTED EVENT OR IN USE EVENT IN HOMEPAGE
+        public async Task<Event> GetSelectedEventAsync()
+        {
+            return await _database.Table<Event>().FirstOrDefaultAsync(e => e.IsSelected);
+        }
+        // FOR SPECIFIC ID OF EVENT FOR EDIT EVENT
+        public async Task<Event> GetEventByIdAsync(int eventId)
+        {
+            return await _database.Table<Event>().FirstOrDefaultAsync(e => e.Id == eventId);
+        }
+        // DISPLAY EVENT DATA TO EVENT TABBED PAGE
+        public async Task<List<Event>> GetEventsAsync()
+        {
+            return await _database.Table<Event>().ToListAsync();
+        }
+        // FILTER CATEGORY EVENT
+        public async Task<List<Event>> GetEventsByCategoryAsync(string category)
+        {
+            return await _database.Table<Event>().Where(e => e.Category == category).ToListAsync();
+        }
+        //FILTER LOGS
+        public async Task<List<AttendanceLog>> GetFilteredLogsAsync(string eventName, string eventDate, string eventCategory, string fromTime, string toTime)
+        {
+            string query = "SELECT * FROM attendancelogs WHERE Status = 'SUCCESS'";
+            List<object> parameters = new List<object>();
+
+            if (!string.IsNullOrEmpty(eventName))
+            {
+                query += " AND LOWER(EventName) = LOWER(?)";
+                parameters.Add(eventName.ToLower());
+            }
+
+            if (!string.IsNullOrEmpty(eventDate))
+            {
+                query += " AND EventDate = ?";
+                parameters.Add(eventDate);
+            }
+
+            if (!string.IsNullOrEmpty(eventCategory))
+            {
+                query += " AND LOWER(EventCategory) = LOWER(?)";
+                parameters.Add(eventCategory.ToLower());
+            }
+
+            if (!string.IsNullOrEmpty(fromTime) && !string.IsNullOrEmpty(toTime))
+            {
+                query += " AND (LOWER(FromTime) = LOWER(?) AND LOWER(ToTime) = LOWER(?))";
+                parameters.Add(fromTime.ToLower());
+                parameters.Add(toTime.ToLower());
+            }
+
+            query += " ORDER BY Timestamp DESC";
+
+            return await _database.QueryAsync<AttendanceLog>(query, parameters.ToArray());
+        }
+        //FILTER CATEGORY
+        public async Task<List<Event>> GetFilteredCategoryAsync(string category)
+        {
+            return await _database.Table<Event>()
+                .Where(l => l.Category == category)
+                .ToListAsync();
+        }
+        //CONTROL FOR EXISTING DATA OF EVENT NAME
+        public async Task<Event> GetEventByNameAsync(string eventName)
+        {
+            return await _database.Table<Event>()
+                                  .Where(e => e.EventName == eventName)
+                                  .FirstOrDefaultAsync();
+        }
+        //EXPORT FILTER DIFFERENT METHODS
+        public async Task<List<AttendanceLog>> GetFilteredLogsExportAsync(string eventName, string eventCategory, string eventDate, string fromTime, string toTime)
+        {
+            return await _database.Table<AttendanceLog>()
+                .Where(log => log.EventName == eventName &&
+                              log.EventCategory == eventCategory &&
+                              log.EventDate == eventDate &&
+                              log.FromTime == fromTime &&
+                              log.ToTime == toTime)
+                .ToListAsync();
+        }
+        public async Task<List<AttendanceLog>> GetLogsByEventAndCategoryAsync(string eventName, string eventCategory)
+        {
+            return await _database.Table<AttendanceLog>()
+                .Where(log => log.EventName == eventName && log.EventCategory == eventCategory)
+                .ToListAsync();
+        }
+        public async Task<List<AttendanceLog>> GetLogsByEventCategoryAndDateAsync(string eventName, string eventCategory, string eventDate)
+        {
+            return await _database.Table<AttendanceLog>()
+                .Where(log => log.EventName == eventName && log.EventCategory == eventCategory && log.EventDate == eventDate)
+                .ToListAsync();
+        }
+
+
+
+
+    }
+}

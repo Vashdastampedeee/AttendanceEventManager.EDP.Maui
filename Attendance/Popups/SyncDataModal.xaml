@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage
+    x:Class="Attendance.Popups.SyncDataModal"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    Title="SyncDataModal"
+    CloseWhenBackgroundIsClicked="False"
+    HasSystemPadding="True">
+
+    <Frame
+        Padding="20"
+        BackgroundColor="{DynamicResource BgColorWhite}"
+        CornerRadius="15"
+        HorizontalOptions="Center"
+        VerticalOptions="Center">
+
+        <VerticalStackLayout HorizontalOptions="Center" Spacing="15">
+
+
+            <ActivityIndicator
+                HeightRequest="50"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                WidthRequest="50"
+                Color="{DynamicResource PrimaryColorDarkBlue}" />
+
+            <Label
+                x:Name="ProgressLabel"
+                FontAttributes="Bold"
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="Fetching employee data..."
+                TextColor="{DynamicResource TextColorBlack}" />
+
+            <Button
+                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                Clicked="OnCancelClicked"
+                CornerRadius="10"
+                Text="Cancel"
+                TextColor="{DynamicResource TextColorWhite}" />
+        </VerticalStackLayout>
+    </Frame>
+
+</mopups:PopupPage>
