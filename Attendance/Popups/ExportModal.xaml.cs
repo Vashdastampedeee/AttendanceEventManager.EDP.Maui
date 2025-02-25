@@ -101,7 +101,7 @@ public partial class ExportModal : PopupPage
         }
         else
         {
-            filteredLogs = await _dbHelper.GetFilteredLogsAsync(selectedEventName, selectedEventCategory, selectedEventDate, selectedFromTime, selectedToTime);
+            filteredLogs = await _dbHelper.GetFilteredLogsExportAsync(selectedEventName, selectedEventCategory, selectedEventDate, selectedFromTime, selectedToTime);
         }
 
         if (filteredLogs == null || filteredLogs.Count == 0)

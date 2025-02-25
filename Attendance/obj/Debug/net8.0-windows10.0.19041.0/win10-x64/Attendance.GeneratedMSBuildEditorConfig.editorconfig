@@ -40,6 +40,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = Attendance.Pages.Attendanc
 build_metadata.AdditionalFiles.TargetPath = Pages\AttendanceDetailsPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Pages\AttendanceDetailsPage.xaml
 
+[C:/Users/rcarianga/source/repos/Attendance/Attendance/Pages/BusinessUnitDetailsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Attendance.Pages.BusinessUnitDetailsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\BusinessUnitDetailsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\BusinessUnitDetailsPage.xaml
+
 [C:/Users/rcarianga/source/repos/Attendance/Attendance/Pages/HomePage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Attendance.Pages.HomePage.xaml

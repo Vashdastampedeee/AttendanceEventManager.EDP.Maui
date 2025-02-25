@@ -16,7 +16,10 @@
             <CollectionView x:Name="PresentEmployeesList">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="10" BackgroundColor="{DynamicResource BgColorWhite}">
+                        <Frame
+                            Margin="5"
+                            Padding="10"
+                            BackgroundColor="{DynamicResource BgColorWhite}">
                             <VerticalStackLayout>
                                 <Label
                                     FontSize="16"
@@ -32,7 +35,7 @@
                                     TextColor="{DynamicResource TextColorBlack}" />
                                 <Label
                                     FontSize="14"
-                                    Text="Present"
+                                    Text="PRESENT"
                                     TextColor="{DynamicResource TextColorBlack}" />
                             </VerticalStackLayout>
                         </Frame>
@@ -48,7 +51,10 @@
             <CollectionView x:Name="AbsentEmployeesList">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="10" BackgroundColor="{DynamicResource BgColorWhite}">
+                        <Frame
+                            Margin="5"
+                            Padding="10"
+                            BackgroundColor="{DynamicResource BgColorWhite}">
                             <VerticalStackLayout>
                                 <Label
                                     FontSize="16"
@@ -64,7 +70,7 @@
                                     TextColor="{DynamicResource TextColorBlack}" />
                                 <Label
                                     FontSize="14"
-                                    Text="Absent"
+                                    Text="ABSENT"
                                     TextColor="{DynamicResource TextColorBlack}" />
                             </VerticalStackLayout>
                         </Frame>

@@ -10,6 +10,9 @@
     <MauiXaml Update="Pages\AttendanceDetailsPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="Pages\BusinessUnitDetailsPage.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="Pages\HomePage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>

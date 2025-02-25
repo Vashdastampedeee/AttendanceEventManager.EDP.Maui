@@ -333,6 +333,7 @@
                 <Frame
                     BackgroundColor="{DynamicResource BgColorWhite}"
                     HasShadow="True"
+                    HeightRequest="140"
                     WidthRequest="300">
                     <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
                         <Label
@@ -341,18 +342,26 @@
                             FontSize="16"
                             Text="ALL:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button
-                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
-                            Clicked="View_Clicked"
-                            HeightRequest="80"
-                            Text="View"
-                            TextColor="{DynamicResource TextColorWhite}" />
+                        <VerticalStackLayout Spacing="10">
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                Clicked="View_Clicked"
+                                Text="View"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="ALL"
+                                Clicked="ExportAttendance_Clicked"
+                                Text="Export"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                        </VerticalStackLayout>
                     </FlexLayout>
                 </Frame>
 
                 <Frame
                     BackgroundColor="{DynamicResource BgColorWhite}"
                     HasShadow="True"
+                    HeightRequest="140"
                     WidthRequest="300">
                     <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
                         <Label
@@ -361,17 +370,27 @@
                             FontSize="16"
                             Text="RAWLINGS:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button
-                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
-                            HeightRequest="80"
-                            Text="View"
-                            TextColor="{DynamicResource TextColorWhite}" />
+                        <VerticalStackLayout Spacing="10">
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="RAWLINGS"
+                                Clicked="ViewBusinessUnitData_Clicked"
+                                Text="View"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="RAWLINGS"
+                                Clicked="ExportAttendance_Clicked"
+                                Text="Export"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                        </VerticalStackLayout>
                     </FlexLayout>
                 </Frame>
 
                 <Frame
                     BackgroundColor="{DynamicResource BgColorWhite}"
                     HasShadow="True"
+                    HeightRequest="140"
                     WidthRequest="300">
                     <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
                         <Label
@@ -380,17 +399,28 @@
                             FontSize="16"
                             Text="JLINE:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button
-                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
-                            HeightRequest="80"
-                            Text="View"
-                            TextColor="{DynamicResource TextColorWhite}" />
+                        <VerticalStackLayout Spacing="10">
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="JLINE"
+                                Clicked="ViewBusinessUnitData_Clicked"
+                                Text="View"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="JLINE"
+                                Clicked="ExportAttendance_Clicked"
+                                Text="Export"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                        </VerticalStackLayout>
+
                     </FlexLayout>
                 </Frame>
 
                 <Frame
                     BackgroundColor="{DynamicResource BgColorWhite}"
                     HasShadow="True"
+                    HeightRequest="140"
                     WidthRequest="300">
                     <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
                         <Label
@@ -399,17 +429,28 @@
                             FontSize="16"
                             Text="HLB:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button
-                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
-                            HeightRequest="80"
-                            Text="View"
-                            TextColor="{DynamicResource TextColorWhite}" />
+                        <VerticalStackLayout Spacing="10">
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="HLB"
+                                Clicked="ViewBusinessUnitData_Clicked"
+                                Text="View"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="HLB"
+                                Clicked="ExportAttendance_Clicked"
+                                Text="Export"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                        </VerticalStackLayout>
+
                     </FlexLayout>
                 </Frame>
 
                 <Frame
                     BackgroundColor="{DynamicResource BgColorWhite}"
                     HasShadow="True"
+                    HeightRequest="140"
                     WidthRequest="300">
                     <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
                         <Label
@@ -418,17 +459,28 @@
                             FontSize="16"
                             Text="BAG:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button
-                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
-                            HeightRequest="80"
-                            Text="View"
-                            TextColor="{DynamicResource TextColorWhite}" />
+                        <VerticalStackLayout Spacing="10">
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="BAG"
+                                Clicked="ViewBusinessUnitData_Clicked"
+                                Text="View"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="BAG"
+                                Clicked="ExportAttendance_Clicked"
+                                Text="Export"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                        </VerticalStackLayout>
+
                     </FlexLayout>
                 </Frame>
 
                 <Frame
                     BackgroundColor="{DynamicResource BgColorWhite}"
                     HasShadow="True"
+                    HeightRequest="140"
                     WidthRequest="300">
                     <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
                         <Label
@@ -437,11 +489,21 @@
                             FontSize="16"
                             Text="SUPPORT:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button
-                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
-                            HeightRequest="80"
-                            Text="View"
-                            TextColor="{DynamicResource TextColorWhite}" />
+                        <VerticalStackLayout Spacing="10">
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="SUPPORT GROUP"
+                                Clicked="ViewBusinessUnitData_Clicked"
+                                Text="View"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                            <Button
+                                BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                                ClassId="SUPPORT GROUP"
+                                Clicked="ExportAttendance_Clicked"
+                                Text="Export"
+                                TextColor="{DynamicResource TextColorWhite}" />
+                        </VerticalStackLayout>
+
                     </FlexLayout>
                 </Frame>
 

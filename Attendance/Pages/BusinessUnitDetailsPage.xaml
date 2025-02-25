@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Attendance.Pages.BusinessUnitDetailsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Business Unit Attendance"
+    BackgroundColor="{DynamicResource BgColorWhite}">
+    <ScrollView>
+        <VerticalStackLayout Padding="10" Spacing="15">
+
+            <Label
+                x:Name="BusinessUnitTitle"
+                FontAttributes="Bold"
+                FontSize="24"
+                TextColor="{DynamicResource TextColorBlack}" />
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                Text="Present Employees"
+                TextColor="{DynamicResource TextColorBlack}" />
+            <CollectionView x:Name="PresentEmployeesList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame
+                            Margin="5"
+                            Padding="10"
+                            BackgroundColor="{DynamicResource BgColorWhite}">
+                            <VerticalStackLayout>
+                                <Label
+                                    FontSize="16"
+                                    Text="{Binding IdNumber}"
+                                    TextColor="{DynamicResource TextColorBlack}" />
+                                <Label
+                                    FontSize="14"
+                                    Text="{Binding Name}"
+                                    TextColor="{DynamicResource TextColorBlack}" />
+                                <Label
+                                    FontSize="14"
+                                    Text="{Binding BusinessUnit}"
+                                    TextColor="{DynamicResource TextColorBlack}" />
+                                <Label
+                                    FontSize="14"
+                                    Text="PRESENT"
+                                    TextColor="{DynamicResource TextColorBlack}" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                Text="Absent Employees"
+                TextColor="{DynamicResource TextColorBlack}" />
+            <CollectionView x:Name="AbsentEmployeesList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame
+                            Margin="5"
+                            Padding="10"
+                            BackgroundColor="{DynamicResource BgColorWhite}">
+                            <VerticalStackLayout>
+                                <Label
+                                    FontSize="16"
+                                    Text="{Binding IdNumber}"
+                                    TextColor="{DynamicResource TextColorBlack}" />
+                                <Label
+                                    FontSize="14"
+                                    Text="{Binding Name}"
+                                    TextColor="{DynamicResource TextColorBlack}" />
+                                <Label
+                                    FontSize="14"
+                                    Text="{Binding BusinessUnit}"
+                                    TextColor="{DynamicResource TextColorBlack}" />
+                                <Label
+                                    FontSize="14"
+                                    Text="ABSENT"
+                                    TextColor="{DynamicResource TextColorBlack}" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

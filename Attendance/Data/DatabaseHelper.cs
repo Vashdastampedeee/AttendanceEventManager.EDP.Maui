@@ -9,6 +9,7 @@ using Microsoft.Data.SqlClient;
 using Mopups.Services;
 using ClosedXML.Excel;
 using SQLite;
+using System.Diagnostics;
 
 namespace Attendance.Data
 {
@@ -165,61 +166,6 @@ namespace Attendance.Data
         {
             return _database.Table<AttendanceLog>().OrderByDescending(log => log.Timestamp) .ToListAsync();
         }
-        //EXPORT LOGS DATA FROM ATTENDANCE LOG TABLE TO EXCEL
-        public async Task ExportAttendanceLogsToExcel()
-        {
-            var logs = await GetLogsAsync();
-            var selectedEvent = await GetSelectedEventAsync();
-
-            if (logs == null || logs.Count == 0)
-            {
-                await MopupService.Instance.PushAsync(new DownloadModal("Export Failed", "No attendance records found."));
-                return;
-            }
-
-            string downloadsPath = Path.Combine("/storage/emulated/0/Download/", "AttendanceLogs.xlsx");
-
-            try
-            {
-                using (var workbook = new XLWorkbook())
-                {
-            
-                    var worksheet = workbook.Worksheets.Add("Attendance Logs");
-
-                    worksheet.Cell(1, 1).Value = "ID Number";
-                    worksheet.Cell(1, 2).Value = "Event Name";
-                    worksheet.Cell(1, 3).Value = "Event Category";
-                    worksheet.Cell(1, 4).Value = "Event Date";
-                    worksheet.Cell(1, 5).Value = "Event Time";
-                    worksheet.Cell(1, 6).Value = "Business Unit";
-                    worksheet.Cell(1, 7).Value = "Name";
-                    worksheet.Cell(1, 8).Value = "Data Scanned";
-                    worksheet.Cell(1, 9).Value = "Status";
-                    int row = 2;
-                    foreach (var log in logs)
-                    {
-                        worksheet.Cell(row, 1).Value = log.IdNumber;
-                        worksheet.Cell(row, 2).Value = log.EventName;
-                        worksheet.Cell(row, 3).Value = log.EventCategory;
-                        worksheet.Cell(row, 4).Value = log.EventDate;
-                        worksheet.Cell(row, 5).Value = $"{log.FromTime} - {log.ToTime}";
-                        worksheet.Cell(row, 6).Value = log.BusinessUnit;
-                        worksheet.Cell(row, 7).Value = log.Name;
-                        worksheet.Cell(row, 8).Value = log.Timestamp;
-                        worksheet.Cell(row, 9).Value = log.Status;
-                        row++;
-                    }
-                    worksheet.Columns().AdjustToContents();
-                    workbook.SaveAs(downloadsPath);
-                }
-
-                await MopupService.Instance.PushAsync(new DownloadModal("Export Successful", $"Excel file saved at:\n{downloadsPath}"));
-            }
-            catch (Exception ex)
-            {
-                await MopupService.Instance.PushAsync(new DownloadModal("Export Error", $"Failed to export file: {ex.Message}"));
-            }
-        }
         //SEARCH LOG DATA FOR ATTENDANCE LOG TABLE
         public async Task<List<AttendanceLog>> SearchLogsByEventAsync(string keyword, string eventName, string eventCategory)
         {
@@ -368,10 +314,10 @@ namespace Attendance.Data
         public async Task<List<AttendanceLog>> GetLogsByEventAndCategoryAsync(string eventName, string eventCategory)
         {
             return await _database.QueryAsync<AttendanceLog>(
-                "SELECT * FROM attendancelogs WHERE EventName = ? AND EventCategory = ?", eventName, eventCategory
+                "SELECT * FROM attendancelogs WHERE EventName = ? AND EventCategory = ? ORDER BY Timestamp DESC",
+                eventName, eventCategory
             );
         }
-
         public async Task<List<AttendanceLog>> GetLogsByEventCategoryAndDateAsync(string eventName, string eventCategory, string eventDate)
         {
             return await _database.QueryAsync<AttendanceLog>(
@@ -492,6 +438,109 @@ namespace Attendance.Data
 
             return await _database.QueryAsync<Employee>(query, eventName);
         }
+
+        public async Task<List<AttendanceLog>> GetPresentEmployeesByBUAsync(string eventName, string businessUnit)
+        {
+            string query = @"SELECT * FROM attendancelogs 
+                     WHERE EventName = ? AND BusinessUnit = ?";
+
+            return await _database.QueryAsync<AttendanceLog>(query, eventName, businessUnit);
+        }
+
+        public async Task<List<Employee>> GetAbsentEmployeesByBUAsync(string eventName, string businessUnit)
+        {
+            string query = @"SELECT * FROM employee 
+                     WHERE BusinessUnit = ? 
+                     AND IdNumber NOT IN (SELECT IdNumber FROM attendancelogs WHERE EventName = ?)";
+
+            return await _database.QueryAsync<Employee>(query, businessUnit, eventName);
+        }
+
+        public async Task ExportAttendanceToExcel(string businessUnit = "ALL")
+        {
+            try
+            {
+                var selectedEvent = await GetSelectedEventAsync();
+                if (selectedEvent == null)
+                {
+                    Debug.WriteLine("[ERROR] No active event selected.");
+                    return;
+                }
+
+                Debug.WriteLine($"[INFO] Exporting attendance for Business Unit: {businessUnit}");
+
+                // Get Present and Absent Employees based on Business Unit
+                List<AttendanceLog> presentEmployees;
+                List<Employee> absentEmployees;
+
+                if (businessUnit == "ALL")
+                {
+                    presentEmployees = await GetPresentEmployeesAsync(selectedEvent.EventName);
+                    absentEmployees = await GetAbsentEmployeesAsync(selectedEvent.EventName);
+                }
+                else
+                {
+                    presentEmployees = await GetPresentEmployeesByBUAsync(selectedEvent.EventName, businessUnit);
+                    absentEmployees = await GetAbsentEmployeesByBUAsync(selectedEvent.EventName, businessUnit);
+                }
+
+                Debug.WriteLine($"[INFO] Total Present Employees: {presentEmployees.Count}");
+                Debug.WriteLine($"[INFO] Total Absent Employees: {absentEmployees.Count}");
+
+                // Set Excel File Path
+                string fileName = $"Attendance_{businessUnit}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                string filePath = Path.Combine("/storage/emulated/0/Download/", fileName);
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add("Attendance");
+
+                    // Headers
+                    worksheet.Cell(1, 1).Value = "ID Number";
+                    worksheet.Cell(1, 2).Value = "Name";
+                    worksheet.Cell(1, 3).Value = "Business Unit";
+                    worksheet.Cell(1, 4).Value = "Status";
+
+                    // Fill Present Employees
+                    int row = 2;
+                    foreach (var emp in presentEmployees)
+                    {
+                        worksheet.Cell(row, 1).Value = emp.IdNumber;
+                        worksheet.Cell(row, 2).Value = emp.Name;
+                        worksheet.Cell(row, 3).Value = emp.BusinessUnit;
+                        worksheet.Cell(row, 4).Value = "Present";
+                        row++;
+                    }
+
+                    // Fill Absent Employees
+                    foreach (var emp in absentEmployees)
+                    {
+                        worksheet.Cell(row, 1).Value = emp.IdNumber;
+                        worksheet.Cell(row, 2).Value = emp.Name;
+                        worksheet.Cell(row, 3).Value = emp.BusinessUnit;
+                        worksheet.Cell(row, 4).Value = "Absent";
+                        row++;
+                    }
+
+                    // Auto-fit columns
+                    worksheet.Columns().AdjustToContents();
+
+                    // Save Excel file
+                    workbook.SaveAs(filePath);
+                }
+
+                Debug.WriteLine($"[SUCCESS] Attendance exported successfully: {filePath}");
+                await MopupService.Instance.PushAsync(new DownloadModal("Export Successful", $"File saved at:\n{filePath}"));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ERROR] Failed to export attendance: {ex.Message}");
+                await MopupService.Instance.PushAsync(new DownloadModal("Export Error", $"Failed to export: {ex.Message}"));
+            }
+        }
+
+
+
 
     }
 }

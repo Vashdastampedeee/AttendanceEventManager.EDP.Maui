@@ -11,8 +11,6 @@ public partial class SettingPage : TabbedPage
     private DatabaseHelper _dbHelper;
     private CancellationTokenSource _cts;
 
-    private string selectedCategory = "";
-
     private string lastEventName;
     private string lastEventCategory;
     private string lastEventDate;
@@ -81,9 +79,7 @@ public partial class SettingPage : TabbedPage
         }
 
         // ✅ Load logs for the last filtered event (or active event if none was filtered)
-        var logs = (await _dbHelper.GetLogsByEventAndCategoryAsync(eventName, eventCategory))
-             .OrderByDescending(log => log.Timestamp) // ✅ Sorting logs by latest first
-             .ToList();
+        var logs = await _dbHelper.GetLogsByEventAndCategoryAsync(eventName, eventCategory);
         if (logs == null || logs.Count == 0)
         {
             await MopupService.Instance.PushAsync(new DownloadModal("Logs", $"No attendance records found for {eventName}."));
@@ -379,5 +375,28 @@ public partial class SettingPage : TabbedPage
         }
 
         await Navigation.PushAsync(new AttendanceDetailsPage(_dbHelper, selectedEvent.EventName));
+    }
+
+    private async void ViewBusinessUnitData_Clicked(object sender, EventArgs e)
+    {
+        var selectedEvent = await _dbHelper.GetSelectedEventAsync();
+        if (selectedEvent == null)
+        {
+            await DisplayAlert("Error", "No active event selected!", "OK");
+            return;
+        }
+
+        // Get the clicked button's Business Unit
+        var button = (Button)sender;
+        string businessUnit = button.ClassId; // Store Business Unit name in ClassId in XAML
+
+        await Navigation.PushAsync(new BusinessUnitDetailsPage(_dbHelper, selectedEvent.EventName, businessUnit));
+    }
+
+    private async void ExportAttendance_Clicked(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+        string businessUnit = button.ClassId;
+        await _dbHelper.ExportAttendanceToExcel(businessUnit);
     }
 }
