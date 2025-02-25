@@ -278,8 +278,10 @@ namespace Attendance.Data
         // DISPLAY SELECTED EVENT OR IN USE EVENT IN HOMEPAGE
         public async Task<Event> GetSelectedEventAsync()
         {
-            return await _database.Table<Event>().FirstOrDefaultAsync(e => e.IsSelected);
+            var result = await _database.QueryAsync<Event>("SELECT * FROM event WHERE IsSelected = 1 LIMIT 1");
+            return result.FirstOrDefault();
         }
+
         // FOR SPECIFIC ID OF EVENT FOR EDIT EVENT
         public async Task<Event> GetEventByIdAsync(int eventId)
         {
@@ -288,7 +290,7 @@ namespace Attendance.Data
         // DISPLAY EVENT DATA TO EVENT TABBED PAGE
         public async Task<List<Event>> GetEventsAsync()
         {
-            return await _database.Table<Event>().ToListAsync();
+            return await _database.QueryAsync<Event>("SELECT * FROM event");
         }
         // FILTER CATEGORY EVENT
         public async Task<List<Event>> GetEventsByCategoryAsync(string category)
@@ -365,15 +367,17 @@ namespace Attendance.Data
         }
         public async Task<List<AttendanceLog>> GetLogsByEventAndCategoryAsync(string eventName, string eventCategory)
         {
-            return await _database.Table<AttendanceLog>()
-                .Where(log => log.EventName == eventName && log.EventCategory == eventCategory)
-                .ToListAsync();
+            return await _database.QueryAsync<AttendanceLog>(
+                "SELECT * FROM attendancelogs WHERE EventName = ? AND EventCategory = ?", eventName, eventCategory
+            );
         }
+
         public async Task<List<AttendanceLog>> GetLogsByEventCategoryAndDateAsync(string eventName, string eventCategory, string eventDate)
         {
-            return await _database.Table<AttendanceLog>()
-                .Where(log => log.EventName == eventName && log.EventCategory == eventCategory && log.EventDate == eventDate)
-                .ToListAsync();
+            return await _database.QueryAsync<AttendanceLog>(
+                "SELECT * FROM attendancelogs WHERE EventName = ? AND EventCategory = ? AND EventDate = ?",
+                eventName, eventCategory, eventDate
+            );
         }
         public async Task<int> GetTotalEmployeeCountAsync()
         {
