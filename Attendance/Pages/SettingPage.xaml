@@ -342,9 +342,11 @@
                             Text="ALL:"
                             TextColor="{DynamicResource TextColorBlack}" />
                         <Button
+                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
                             Clicked="View_Clicked"
                             HeightRequest="80"
-                            Text="View" />
+                            Text="View"
+                            TextColor="{DynamicResource TextColorWhite}" />
                     </FlexLayout>
                 </Frame>
 
@@ -359,7 +361,11 @@
                             FontSize="16"
                             Text="RAWLINGS:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button HeightRequest="80" Text="View" />
+                        <Button
+                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                            HeightRequest="80"
+                            Text="View"
+                            TextColor="{DynamicResource TextColorWhite}" />
                     </FlexLayout>
                 </Frame>
 
@@ -374,7 +380,11 @@
                             FontSize="16"
                             Text="JLINE:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button HeightRequest="80" Text="View" />
+                        <Button
+                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                            HeightRequest="80"
+                            Text="View"
+                            TextColor="{DynamicResource TextColorWhite}" />
                     </FlexLayout>
                 </Frame>
 
@@ -389,7 +399,11 @@
                             FontSize="16"
                             Text="HLB:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button HeightRequest="80" Text="View" />
+                        <Button
+                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                            HeightRequest="80"
+                            Text="View"
+                            TextColor="{DynamicResource TextColorWhite}" />
                     </FlexLayout>
                 </Frame>
 
@@ -404,7 +418,11 @@
                             FontSize="16"
                             Text="BAG:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button HeightRequest="80" Text="View" />
+                        <Button
+                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                            HeightRequest="80"
+                            Text="View"
+                            TextColor="{DynamicResource TextColorWhite}" />
                     </FlexLayout>
                 </Frame>
 
@@ -419,7 +437,11 @@
                             FontSize="16"
                             Text="SUPPORT:"
                             TextColor="{DynamicResource TextColorBlack}" />
-                        <Button HeightRequest="80" Text="View" />
+                        <Button
+                            BackgroundColor="{DynamicResource PrimaryColorDarkBlue}"
+                            HeightRequest="80"
+                            Text="View"
+                            TextColor="{DynamicResource TextColorWhite}" />
                     </FlexLayout>
                 </Frame>
 

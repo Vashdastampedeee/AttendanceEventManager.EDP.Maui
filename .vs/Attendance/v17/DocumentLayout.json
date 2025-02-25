@@ -3,24 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\pages\\attendancedetailspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|solutionrelative:attendance\\pages\\attendancedetailspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\pages\\attendancedetailspage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|solutionrelative:attendance\\pages\\attendancedetailspage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\data\\databasehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|solutionrelative:attendance\\data\\databasehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\pages\\settingpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|solutionrelative:attendance\\pages\\settingpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\pages\\settingpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|solutionrelative:attendance\\pages\\settingpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\pages\\settingpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|solutionrelative:attendance\\pages\\settingpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\popups\\filterlogsmodal.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|solutionrelative:attendance\\popups\\filterlogsmodal.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\pages\\attendancedetailspage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|solutionrelative:attendance\\pages\\attendancedetailspage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\pages\\attendancedetailspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|solutionrelative:attendance\\pages\\attendancedetailspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\popups\\exportmodal.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|solutionrelative:attendance\\popups\\exportmodal.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{45685688-2BB8-4ED8-B202-E538EC6335B9}|Attendance\\Attendance.csproj|c:\\users\\rcarianga\\source\\repos\\attendance\\attendance\\pages\\homepage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -34,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,20 +50,85 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SettingPage.xaml",
+              "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\SettingPage.xaml",
+              "RelativeDocumentMoniker": "Attendance\\Pages\\SettingPage.xaml",
+              "ToolTip": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\SettingPage.xaml",
+              "RelativeToolTip": "Attendance\\Pages\\SettingPage.xaml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAYwLsBAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-02-25T01:17:28.022Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ExportModal.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Popups\\ExportModal.xaml.cs",
+              "RelativeDocumentMoniker": "Attendance\\Popups\\ExportModal.xaml.cs",
+              "ToolTip": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Popups\\ExportModal.xaml.cs",
+              "RelativeToolTip": "Attendance\\Popups\\ExportModal.xaml.cs",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAwwFoAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T00:32:41.578Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SettingPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\SettingPage.xaml.cs",
+              "RelativeDocumentMoniker": "Attendance\\Pages\\SettingPage.xaml.cs",
+              "ToolTip": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\SettingPage.xaml.cs",
+              "RelativeToolTip": "Attendance\\Pages\\SettingPage.xaml.cs",
+              "ViewState": "AgIAAFcBAAAAAAAAAAAIwF8BAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T03:50:32.175Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "DatabaseHelper.cs",
+              "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Data\\DatabaseHelper.cs",
+              "RelativeDocumentMoniker": "Attendance\\Data\\DatabaseHelper.cs",
+              "ToolTip": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Data\\DatabaseHelper.cs",
+              "RelativeToolTip": "Attendance\\Data\\DatabaseHelper.cs",
+              "ViewState": "AgIAAG4BAAAAAAAAAAAAAIkBAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T04:21:44.733Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FilterLogsModal.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Popups\\FilterLogsModal.xaml.cs",
+              "RelativeDocumentMoniker": "Attendance\\Popups\\FilterLogsModal.xaml.cs",
+              "ToolTip": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Popups\\FilterLogsModal.xaml.cs",
+              "RelativeToolTip": "Attendance\\Popups\\FilterLogsModal.xaml.cs",
+              "ViewState": "AgIAAMIAAAAAAAAAAAAgwP8AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T23:32:43.001Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "AttendanceDetailsPage.xaml.cs",
               "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\AttendanceDetailsPage.xaml.cs",
               "RelativeDocumentMoniker": "Attendance\\Pages\\AttendanceDetailsPage.xaml.cs",
               "ToolTip": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\AttendanceDetailsPage.xaml.cs",
               "RelativeToolTip": "Attendance\\Pages\\AttendanceDetailsPage.xaml.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAswDkAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAYwCEAAABYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-24T06:12:39.63Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "AttendanceDetailsPage.xaml",
               "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\AttendanceDetailsPage.xaml",
               "RelativeDocumentMoniker": "Attendance\\Pages\\AttendanceDetailsPage.xaml",
@@ -68,7 +141,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "HomePage.xaml",
               "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\HomePage.xaml",
               "RelativeDocumentMoniker": "Attendance\\Pages\\HomePage.xaml",
@@ -76,47 +149,7 @@
               "RelativeToolTip": "Attendance\\Pages\\HomePage.xaml",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAABQAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-02-24T05:23:59.76Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "DatabaseHelper.cs",
-              "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Data\\DatabaseHelper.cs",
-              "RelativeDocumentMoniker": "Attendance\\Data\\DatabaseHelper.cs",
-              "ToolTip": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Data\\DatabaseHelper.cs",
-              "RelativeToolTip": "Attendance\\Data\\DatabaseHelper.cs",
-              "ViewState": "AgIAALgAAAAAAAAAAADwv7ABAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-24T04:21:44.733Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SettingPage.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\SettingPage.xaml.cs",
-              "RelativeDocumentMoniker": "Attendance\\Pages\\SettingPage.xaml.cs",
-              "ToolTip": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\SettingPage.xaml.cs",
-              "RelativeToolTip": "Attendance\\Pages\\SettingPage.xaml.cs",
-              "ViewState": "AgIAABUBAAAAAAAAAAA1wCsBAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-24T03:50:32.175Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SettingPage.xaml",
-              "DocumentMoniker": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\SettingPage.xaml",
-              "RelativeDocumentMoniker": "Attendance\\Pages\\SettingPage.xaml",
-              "ToolTip": "C:\\Users\\rcarianga\\source\\repos\\Attendance\\Attendance\\Pages\\SettingPage.xaml",
-              "RelativeToolTip": "Attendance\\Pages\\SettingPage.xaml",
-              "ViewState": "AgIAAEQBAAAAAAAAAAAAAFgBAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-02-24T03:30:38.292Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-24T05:23:59.76Z"
             }
           ]
         }

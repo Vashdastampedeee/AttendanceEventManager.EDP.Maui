@@ -62,12 +62,34 @@ public partial class SettingPage : TabbedPage
     }
     private async Task LoadAttendanceLogs()
     {
-        var logs = await _dbHelper.GetLogsAsync();
+        // ✅ Use the last selected event from filtering
+        string eventName = lastEventName;
+        string eventCategory = lastEventCategory;
+
+        // ✅ If no filter was applied, default to the active event
+        if (string.IsNullOrEmpty(eventName) || string.IsNullOrEmpty(eventCategory))
+        {
+            var selectedEvent = await _dbHelper.GetSelectedEventAsync();
+            if (selectedEvent == null)
+            {
+                await MopupService.Instance.PushAsync(new DownloadModal("Logs", "No active event found. Please set an active event."));
+                return;
+            }
+
+            eventName = selectedEvent.EventName;
+            eventCategory = selectedEvent.Category;
+        }
+
+        // ✅ Load logs for the last filtered event (or active event if none was filtered)
+        var logs = (await _dbHelper.GetLogsByEventAndCategoryAsync(eventName, eventCategory))
+             .OrderByDescending(log => log.Timestamp) // ✅ Sorting logs by latest first
+             .ToList();
         if (logs == null || logs.Count == 0)
         {
-            await MopupService.Instance.PushAsync(new DownloadModal("Logs", "No attendance records found."));
+            await MopupService.Instance.PushAsync(new DownloadModal("Logs", $"No attendance records found for {eventName}."));
             return;
         }
+
         AttendanceLogData.ItemsSource = new ObservableCollection<AttendanceLog>(logs);
     }
     //ATTENDANCE LOGS TABBED
@@ -83,17 +105,41 @@ public partial class SettingPage : TabbedPage
         _cts = new CancellationTokenSource();
         CancellationToken token = _cts.Token;
 
-        await Task.Delay(500); // Wait for 300ms before executing search
+        await Task.Delay(500); // ✅ Wait before executing search
 
-        if (token.IsCancellationRequested) return; // Stop if a new search started
+        if (token.IsCancellationRequested) return; // ✅ Stop if a new search started
+
+        // ✅ Check if there's a last filtered event, otherwise use the active event
+        string eventName = lastEventName;
+        string eventCategory = lastEventCategory;
+
+        if (string.IsNullOrEmpty(eventName) || string.IsNullOrEmpty(eventCategory))
+        {
+            var selectedEvent = await _dbHelper.GetSelectedEventAsync();
+            if (selectedEvent == null)
+            {
+                await MopupService.Instance.PushAsync(new DownloadModal("Error", "No active event found. Please set an active event."));
+                return;
+            }
+
+            eventName = selectedEvent.EventName;
+            eventCategory = selectedEvent.Category;
+        }
 
         if (string.IsNullOrWhiteSpace(searchText))
         {
-            LoadAttendanceLogs();
+            // ✅ Load logs for the last filtered event instead of always using the active event
+            var logs = (await _dbHelper.GetLogsByEventAndCategoryAsync(eventName, eventCategory))
+                   .OrderByDescending(log => log.Timestamp)
+                   .ToList();
+            AttendanceLogData.ItemsSource = new ObservableCollection<AttendanceLog>(logs);
         }
         else
         {
-            var filteredLogs = await _dbHelper.SearchLogsAsync(searchText);
+            // ✅ Search only within logs of the last filtered event
+            var filteredLogs = (await _dbHelper.SearchLogsByEventAsync(searchText, eventName, eventCategory))
+                           .OrderByDescending(log => log.Timestamp)
+                           .ToList();
             if (!token.IsCancellationRequested)
             {
                 AttendanceLogData.ItemsSource = new ObservableCollection<AttendanceLog>(filteredLogs);
@@ -265,14 +311,40 @@ public partial class SettingPage : TabbedPage
         lastFromTime = fromTime;
         lastToTime = toTime;
 
-        var filteredLogs = await _dbHelper.GetFilteredLogsAsync(eventName, eventDate, eventCategory, fromTime, toTime);
+        List<AttendanceLog> filteredLogs;
 
+        // ✅ Validate that event and category are selected
+        if (string.IsNullOrEmpty(eventName) || string.IsNullOrEmpty(eventCategory))
+        {
+            await MopupService.Instance.PushAsync(new DownloadModal("Filter Error", "Please select an event and category."));
+            return;
+        }
+
+        // ✅ If no date & no time are selected → Include all available dates & times
+        if (string.IsNullOrEmpty(eventDate) && string.IsNullOrEmpty(fromTime))
+        {
+            filteredLogs = await _dbHelper.GetLogsByEventAndCategoryAsync(eventName, eventCategory);
+        }
+        // ✅ If only date is selected → Include all times for that date
+        else if (!string.IsNullOrEmpty(eventDate) && string.IsNullOrEmpty(fromTime))
+        {
+            filteredLogs = await _dbHelper.GetLogsByEventCategoryAndDateAsync(eventName, eventCategory, eventDate);
+        }
+        // ✅ If both date & time are selected → Fully filter by event, category, date, and time
+        else
+        {
+            filteredLogs = await _dbHelper.GetFilteredLogsAsync(eventName, eventDate, eventCategory, fromTime, toTime);
+        }
+
+        // ✅ Handle empty result case
         if (filteredLogs == null || filteredLogs.Count == 0)
         {
             await MopupService.Instance.PushAsync(new DownloadModal("No Logs Found!", "No logs match the selected filters."));
             return;
         }
-        AttendanceLogData.ItemsSource = new ObservableCollection<AttendanceLog>(filteredLogs);
+
+        // ✅ Sort logs by latest first
+        AttendanceLogData.ItemsSource = new ObservableCollection<AttendanceLog>(filteredLogs.OrderByDescending(log => log.Timestamp));
     }
 
     private async void LoadDashboardData()

@@ -221,19 +221,14 @@ namespace Attendance.Data
             }
         }
         //SEARCH LOG DATA FOR ATTENDANCE LOG TABLE
-        public async Task<List<AttendanceLog>> SearchLogsAsync(string keyword)
+        public async Task<List<AttendanceLog>> SearchLogsByEventAsync(string keyword, string eventName, string eventCategory)
         {
             keyword = keyword.ToLower();
 
             return await _database.QueryAsync<AttendanceLog>(
-                "SELECT * FROM attendancelogs WHERE " +
-                "LOWER(IdNumber) LIKE ? OR " +
-                "LOWER(Name) LIKE ? OR " +
-                "LOWER(BusinessUnit) LIKE ? OR " +
-                "LOWER(Status) LIKE ?" +
-                "LOWER(EventName) LIKE ?" +
-                "LOWER(EventCategory) LIKE ?",
-                $"%{keyword}%", $"%{keyword}%", $"%{keyword}%", $"%{keyword}%", $"%{keyword}%", $"%{keyword}%"
+                "SELECT * FROM attendancelogs WHERE (LOWER(IdNumber) LIKE ? OR LOWER(Name) LIKE ? OR LOWER(BusinessUnit) LIKE ? OR LOWER(Status) LIKE ?) " +
+                "AND LOWER(EventName) = LOWER(?) AND LOWER(EventCategory) = LOWER(?)",
+                $"%{keyword}%", $"%{keyword}%", $"%{keyword}%", $"%{keyword}%", eventName.ToLower(), eventCategory.ToLower()
             );
         }
         //SEARCH EVENT DATA FOR EMPLOYEE DATA
@@ -303,32 +298,40 @@ namespace Attendance.Data
         //FILTER LOGS
         public async Task<List<AttendanceLog>> GetFilteredLogsAsync(string eventName, string eventDate, string eventCategory, string fromTime, string toTime)
         {
-            string query = "SELECT * FROM attendancelogs WHERE Status = 'SUCCESS'";
+            string query = "SELECT * FROM attendancelogs";
             List<object> parameters = new List<object>();
+
+            List<string> conditions = new List<string>();
 
             if (!string.IsNullOrEmpty(eventName))
             {
-                query += " AND LOWER(EventName) = LOWER(?)";
+                conditions.Add("LOWER(EventName) = LOWER(?)");
                 parameters.Add(eventName.ToLower());
-            }
-
-            if (!string.IsNullOrEmpty(eventDate))
-            {
-                query += " AND EventDate = ?";
-                parameters.Add(eventDate);
             }
 
             if (!string.IsNullOrEmpty(eventCategory))
             {
-                query += " AND LOWER(EventCategory) = LOWER(?)";
+                conditions.Add("LOWER(EventCategory) = LOWER(?)");
                 parameters.Add(eventCategory.ToLower());
+            }
+
+            if (!string.IsNullOrEmpty(eventDate))
+            {
+                conditions.Add("EventDate = ?");
+                parameters.Add(eventDate);
             }
 
             if (!string.IsNullOrEmpty(fromTime) && !string.IsNullOrEmpty(toTime))
             {
-                query += " AND (LOWER(FromTime) = LOWER(?) AND LOWER(ToTime) = LOWER(?))";
+                conditions.Add("(LOWER(FromTime) = LOWER(?) AND LOWER(ToTime) = LOWER(?))");
                 parameters.Add(fromTime.ToLower());
                 parameters.Add(toTime.ToLower());
+            }
+
+            // ✅ Only add WHERE if there are conditions
+            if (conditions.Count > 0)
+            {
+                query += " WHERE " + string.Join(" AND ", conditions);
             }
 
             query += " ORDER BY Timestamp DESC";
@@ -387,7 +390,8 @@ namespace Attendance.Data
                               log.EventCategory == selectedEvent.Category &&
                               log.EventDate == selectedEvent.EventDate &&
                               log.FromTime == selectedEvent.FromTime &&
-                              log.ToTime == selectedEvent.ToTime)
+                              log.ToTime == selectedEvent.ToTime &&
+                              log.Status == "SUCCESS")
                 .CountAsync();
         }
 
@@ -409,6 +413,14 @@ namespace Attendance.Data
             {
                 int count = await GetTotalEmployeeCountByBUAsync(bu);
                 result[bu] = count;
+            }
+
+            foreach (var bu in businessUnits)
+            {
+                if (!result.ContainsKey(bu))
+                {
+                    result[bu] = 0;
+                }
             }
 
             return result;
@@ -436,12 +448,19 @@ namespace Attendance.Data
         // Get scanned employee counts for all business units in the active event
         public async Task<Dictionary<string, int>> GetScannedEmployeeCountForAllBUAsync()
         {
-            var selectedEvent = await GetSelectedEventAsync();
-            if (selectedEvent == null)
-                return new Dictionary<string, int>(); // No active event, return empty dictionary
-
             var businessUnits = new List<string> { "RAWLINGS", "JLINE", "HLB", "BAG", "SUPPORT GROUP" };
             var result = new Dictionary<string, int>();
+
+            var selectedEvent = await GetSelectedEventAsync();
+            if (selectedEvent == null)
+            {
+                // If no active event, initialize all BUs with zero count
+                foreach (var bu in businessUnits)
+                {
+                    result[bu] = 0;
+                }
+                return result;
+            }
 
             foreach (var bu in businessUnits)
             {
